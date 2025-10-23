@@ -27,7 +27,7 @@ async def run():
                 ),
             )
             print(response.text)
-            print(response.automatic_function_calling_history)
+            # print(response.automatic_function_calling_history)
 
 if __name__ == "__main__":
     asyncio.run(run())

@@ -68,13 +68,13 @@ Bad example: ['how do I do function calling with gemini?', 'Latest Gemini Models
 
     formatted_results = []
     for r in results:
-        formatted_results.append(f"""# [{r['title']}]({r['url']})
-
-_Important: Python: use `google.genai` (pip install google-genai); JavaScript: use @google/genai (npm install @google/genai)_
-
-{r['content']}""")
+        formatted_results.append(f"# [{r['title']}]({r['url']})\n{r['content']}\n")
     
-    return "\n\n---\n\n".join(formatted_results)
+    final_content = """[!WARNING]
+SDKs: The @google/generative-ai (JavaScript) and google-generativeai (Python) SDKs are legacy. Please migrate to the new @google/genai (JavaScript) and google-genai (Python) SDKs.
+Models: Gemini-1.5 to gemini-2.0 are old legacy models. Use the newer models available."""
+
+    return final_content + "\n\n---\n\n".join(formatted_results)
 
 @mcp.tool(
     name="get_capability_page",
