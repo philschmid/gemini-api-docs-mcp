@@ -20,19 +20,40 @@ DB_TOP_K = 3
 
 @mcp.tool(
     name="search_documentation",
-    description="Performs a full-text search on Gemini documentation for the given queries. Optimize queries for Full Text Searches.",
+    description="""Performs a keyword-based full-text search on Gemini documentation.
+IMPORTANT: This uses standard text matching, NOT semantic search.
+To ensure results, you MUST optimize queries by removing stop words (e.g., 'with', 'the', 'in', 'how to') and focusing ONLY on core nouns and verbs.
+If a query fails, try simpler synonyms or root words."""
 )
 def search_documentation(queries: Annotated[
         List[str],
         Field(
-            description="List of up to 3 search queries."
+            description="""List of up to 3 optimized keyword queries.
+Good examples: ['function calling', 'gemini 2.5', 'function declarations'].
+Bad example: ['how do I do function calling with gemini?']"""
         ),
     ]) -> str:
     """Performs a full-text search on Gemini documentation for the given queries. Optimize queries for Full Text Searches."""
     db = Database(DB_PATH)
     
-    # Combine queries with OR for FTS
-    combined_query = " OR ".join(f'"{q}"' for q in queries)
+    optimized_queries = []
+    for q in queries:
+        # Split into words, remove stop words, and add prefix matching (*)
+        words = q.lower().split()
+        filtered_words = [w for w in words if w not in STOP_WORDS]
+        # If all words were stop words, keep original to avoid empty query
+        if not filtered_words:
+             filtered_words = words
+        
+        # Join with AND and add * to each word for prefix matching
+        optimized_q = " AND ".join(f"{w}*" for w in filtered_words)
+        optimized_queries.append(optimized_q)
+    print(f"Optimized queries: {optimized_queries}")
+
+    # Combine optimized queries with OR (if multiple original queries were provided)
+    combined_query = " OR ".join(f"({oq})" for oq in optimized_queries)
+    print(f"Combined query: {combined_query}")
+
     
     results = list(db["docs"].search(combined_query, limit=DB_TOP_K))
     
@@ -47,12 +68,14 @@ def search_documentation(queries: Annotated[
 
 @mcp.tool(
     name="get_capability_page",
-    description="Returns documentation for a specific capability, or a list of available capabilities.",
+    description="""Retrieves the full content of a specific documentation page by its exact title.
+You can call can this tool WITHOUT arguments first to see a master list of all available page titles.
+Then, call it again with the exact title you need.""",
 )
 def get_capability_page(capability: Annotated[
         str,
         Field(
-            description="The title of the capability/page to retrieve. If None, returns a list of all available capabilities.",
+            description="The EXACT title of the documentation page to retrieve (case-sensitive). If you do not know the exact title, OMIT this argument to receive a master list of all available titles.",
         ),
     ]) -> str:
     """
@@ -78,7 +101,7 @@ def get_capability_page(capability: Annotated[
 
 @mcp.tool(
     name="get_current_model",
-    description="Returns documentation for current Gemini models. This includes the latest and available models.",
+    description="Shortcut tool to explicitly retrieve the canonical 'Gemini Models' documentation page. Use this to fast-track finding details about available model variants (Pro, Flash, etc.), their capabilities, versioning, and context window sizes.",
 )
 def get_current_model() -> str:
     """Returns documentation for current Gemini models."""

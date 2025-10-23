@@ -1,7 +1,8 @@
 from sqlite_utils import Database
 import sys
+from gemini_docs_mcp.config import DB_PATH
+from gemini_docs_mcp.server import search_documentation
 
-DB_PATH = "database.db"
 
 def test_search(query: str):
     """Tests FTS search for a given query."""
@@ -12,8 +13,7 @@ def test_search(query: str):
              print("Error: 'docs' table not found. Has ingestion run?")
              return
 
-        results = list(db["docs"].search(query, limit=5))
-        
+        results = search_documentation([query])
         if not results:
             print("No results found.")
             return
@@ -35,6 +35,7 @@ if __name__ == "__main__":
             test_search(query)
     else:
         # Default test queries if none provided
-        test_search("embeddings")
-        test_search("gemini pro")
-        test_search("api key")
+        test_search("function calling with gemini")
+        # test_search("embeddings")
+        # test_search("gemini pro")
+        # test_search("api key")

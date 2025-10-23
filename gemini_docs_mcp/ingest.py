@@ -110,7 +110,7 @@ async def ingest_docs():
             "content_hash": str,
             "last_updated": str,
         }, pk="url")
-        db["docs"].enable_fts(["title", "content"], create_triggers=True)
+        db["docs"].enable_fts(["title", "content"], create_triggers=True, tokenize="trigram")
 
     async with httpx.AsyncClient() as client:
         llms_txt_content = await fetch_url(client, LLMS_TXT_URL)
