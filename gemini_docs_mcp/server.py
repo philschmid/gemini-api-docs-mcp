@@ -39,17 +39,17 @@ DB_TOP_K = 3
 
 @mcp.tool(
     name="search_documentation",
-    description="""Performs a keyword-based full-text search on Gemini documentation.
-IMPORTANT: This uses standard text matching, NOT semantic search.
-To ensure results, you MUST optimize queries by removing stop words (e.g., 'with', 'the', 'in', 'how to') and focusing ONLY on core nouns and verbs.
-If a query fails, try simpler synonyms or root words."""
+    description="""Performs a standard full-text search on Gemini documentation.
+CRITICAL: This is a naive keyword search, NOT semantic. Long queries will FAIL.
+You MUST use VERY SHORT queries (max 2-4 keywords) focusing only on the most unique terms.
+Break complex questions into separate, simple queries."""
 )
 def search_documentation(queries: Annotated[
         List[str],
         Field(
-            description="""List of up to 3 optimized keyword queries.
-Good examples: ['function calling', 'gemini 2.5', 'image understanding'].
-Bad example: ['how do I do function calling with gemini?', 'Latest Gemini Models available']"""
+            description="""List of up to 3 SHORT keyword queries. Keep each query under 4 words.
+BAD: 'google genai python generate image save bytes' (too specific, will fail).
+GOOD: ['function calling', 'imagen parameters', 'save bytes'] (broad, likely to hit)."""
         ),
     ]) -> str:
     """Performs a full-text search on Gemini documentation for the given queries. Optimize queries for Full Text Searches."""
