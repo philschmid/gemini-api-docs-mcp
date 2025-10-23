@@ -36,22 +36,15 @@ Bad example: ['how do I do function calling with gemini?']"""
     """Performs a full-text search on Gemini documentation for the given queries. Optimize queries for Full Text Searches."""
     db = Database(DB_PATH)
     
-    optimized_queries = []
-    for q in queries:
-        # Split into words, remove stop words, and add prefix matching (*)
-        words = q.lower().split()
-        filtered_words = [w for w in words if w not in STOP_WORDS]
-        # If all words were stop words, keep original to avoid empty query
-        if not filtered_words:
-             filtered_words = words
-        
-        # Join with AND and add * to each word for prefix matching
-        optimized_q = " AND ".join(f"{w}*" for w in filtered_words)
-        optimized_queries.append(optimized_q)
-    print(f"Optimized queries: {optimized_queries}")
+    # optimized_queries = []
+    # for q in queries:
+    #     words = q.lower().split()
+    #     optimized_q = " AND ".join(f"{w}*" for w in filtered_words)
+    #     optimized_queries.append(optimized_q)
+    # print(f"Optimized queries: {optimized_queries}")
 
     # Combine optimized queries with OR (if multiple original queries were provided)
-    combined_query = " OR ".join(f"({oq})" for oq in optimized_queries)
+    combined_query = " OR ".join(f"({q})" for q in queries)
     print(f"Combined query: {combined_query}")
 
     
