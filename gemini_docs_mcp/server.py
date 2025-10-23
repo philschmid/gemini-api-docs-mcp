@@ -13,6 +13,25 @@ async def server_lifespan(server: FastMCP):
     await ingest_docs()
     yield
 
+def sanitize_term(query):
+    """
+    Fixes 'syntax error near "."' by wrapping terms with dots in double quotes.
+    For standard FTS5 (even with trigram), "2.5" is treated as a valid phrase,
+    whereas 2.5 raw is treated as broken syntax.
+    """
+    terms = query.split()
+    sanitized = []
+    for term in terms:
+        # If the term contains a dot, it MUST be quoted to pass the FTS5 parser.
+        # We also escape any existing double quotes by doubling them (" -> "")
+        if '.' in term:
+            safe_term = term.replace('"', '""')
+            sanitized.append(f'"{safe_term}"')
+        else:
+            sanitized.append(term)
+    
+    return " ".join(sanitized)
+
 # Initialize FastMCP server with lifespan
 mcp = FastMCP("Gemini API Docs", lifespan=server_lifespan)
 
@@ -29,22 +48,16 @@ def search_documentation(queries: Annotated[
         List[str],
         Field(
             description="""List of up to 3 optimized keyword queries.
-Good examples: ['function calling', 'gemini 2.5', 'function declarations'].
-Bad example: ['how do I do function calling with gemini?']"""
+Good examples: ['function calling', 'gemini 2.5', 'image understanding'].
+Bad example: ['how do I do function calling with gemini?', 'Latest Gemini Models available']"""
         ),
     ]) -> str:
     """Performs a full-text search on Gemini documentation for the given queries. Optimize queries for Full Text Searches."""
     db = Database(DB_PATH)
     
-    # optimized_queries = []
-    # for q in queries:
-    #     words = q.lower().split()
-    #     optimized_q = " AND ".join(f"{w}*" for w in filtered_words)
-    #     optimized_queries.append(optimized_q)
-    # print(f"Optimized queries: {optimized_queries}")
-
     # Combine optimized queries with OR (if multiple original queries were provided)
-    combined_query = " OR ".join(f"({q})" for q in queries)
+    safe_queries = [sanitize_term(q) for q in queries]
+    combined_query = " OR ".join(f"({q})" for q in safe_queries)
     print(f"Combined query: {combined_query}")
 
     
