@@ -18,6 +18,12 @@ sequenceDiagram
     DB-->>Server: Return matching documentation
     Server-->>Client: Return formatted results
 ```
+## How it Works
+
+1.  **Ingestion**: On startup, the server fetches `https://ai.google.dev/gemini-api/docs/llms.txt` to get a list of all available documentation pages.
+2.  **Processing**: It then concurrently fetches and processes each page, extracting the text content.
+3.  **Indexing**: The processed content is stored in a local SQLite database with a Full-Text Search (FTS5) index for efficient querying.
+4.  **Searching**: When you use the `search_documentation` tool, the server queries this SQLite database to find the most relevant documentation pages.
 
 ## Installation
 
