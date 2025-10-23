@@ -68,7 +68,11 @@ Bad example: ['how do I do function calling with gemini?', 'Latest Gemini Models
 
     formatted_results = []
     for r in results:
-        formatted_results.append(f"# [{r['title']}]({r['url']})\n{r['content']}")
+        formatted_results.append(f"""# [{r['title']}]({r['url']})
+
+_Important: Python: use `google.genai` (pip install google-genai); JavaScript: use @google/genai (npm install @google/genai)_
+
+{r['content']}""")
     
     return "\n\n---\n\n".join(formatted_results)
 
