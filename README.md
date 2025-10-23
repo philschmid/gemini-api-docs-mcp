@@ -1,6 +1,11 @@
 # Gemini Docs MCP Server
 
-An MCP server that provides tools to search and retrieve Google Gemini documentation.
+An local STDIO MCP server that provides tools to search and retrieve Google Gemini API documentation.
+
+-   **Search Documentation**: Full-text search across all Gemini documentation pages.
+-   **Get Capabilities**: List available documentation pages or retrieve content for a specific page.
+-   **Get Current Model**: Quickly access documentation for current Gemini models.
+-   **Automatic Updates**: Scrapes and updates documentation on server startup.
 
 ```mermaid
 sequenceDiagram
@@ -13,13 +18,6 @@ sequenceDiagram
     DB-->>Server: Return matching documentation
     Server-->>Client: Return formatted results
 ```
-
-## Features
-
--   **Search Documentation**: Full-text search across all Gemini documentation pages.
--   **Get Capabilities**: List available documentation pages or retrieve content for a specific page.
--   **Get Current Model**: Quickly access documentation for current Gemini models.
--   **Automatic Updates**: Scrapes and updates documentation on server startup.
 
 ## Installation
 
