@@ -23,40 +23,41 @@ sequenceDiagram
 
 ## Installation
 
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/yourusername/gemini-docs-mcp.git
-    cd gemini-docs-mcp
-    ```
+### Option 1: Use `uvx` (Recommended)
 
-2.  Create and activate a virtual environment (recommended):
-    ```bash
-    python -m venv .venv
-    source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
-    ```
+You can use `uvx` to run the server directly without explicit installation. This is the easiest way to get started.
 
-3.  Install the package:
-    ```bash
-    pip install .
-    ```
+```bash
+uvx --from git+https://github.com/philschmid/gemini-api-docs-mcp gemini-docs-mcp
+```
+
+### Option 2: Install directly from GitHub
+
+You can install the package directly from GitHub using `pip`:
+
+```bash
+pip install git+https://github.com/philschmid/gemini-api-docs-mcp.git
+```
+
+### Option 3: Manual Installation (for development)
+
+```bash
+git clone https://github.com/philschmid/gemini-api-docs-mcp.git
+cd gemini-api-docs-mcp
+pip install -e .
+cd ..
+rm -rf gemini-api-docs-mcp
+```
 
 ## Usage
 
-Run the server using the installed command:
+If you installed via `pip` (Option 2 or 3), run the server using:
 
 ```bash
 gemini-docs-mcp
 ```
 
 This will start the MCP server over stdio. It will immediately begin ingesting documentation, which might take a few moments on the first run.
-
-### Running with `uvx`
-
-You can also run the server directly without explicit installation using `uvx`:
-
-```bash
-uvx --from git+https://github.com/yourusername/gemini-docs-mcp gemini-docs-mcp
-```
 
 ### Configuration
 
@@ -71,7 +72,18 @@ Configure your MCP client to run the `gemini-docs-mcp` command.
   "mcpServers": {
     "gemini-docs": {
       "command": "uvx",
-      "args": ["--from", "git+https://github.com/philschmid/gemini-docs-mcp", "gemini-docs-mcp"]
+      "args": ["--from", "git+https://github.com/philschmid/gemini-api-docs-mcp", "gemini-docs-mcp"]
+    }
+  }
+}
+```
+
+
+```json
+{
+  "mcpServers": {
+    "gemini-docs": {
+      "command": "gemini-docs-mcp",
     }
   }
 }
