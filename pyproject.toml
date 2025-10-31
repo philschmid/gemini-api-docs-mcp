@@ -1,5 +1,8 @@
 [project]
 name = "gemini-docs-mcp"
+authors = [
+    { name = "Philipp Schmid", email = "philschmid@google.com" }
+]
 version = "0.1.0"
 description = "MCP server for searching Google Gemini API documentation"
 readme = "README.md"
@@ -17,3 +20,9 @@ gemini-docs-mcp = "gemini_docs_mcp.server:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "google-genai>=1.47.0",
+    "mcp>=1.16.0",
+]

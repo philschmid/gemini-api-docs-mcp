@@ -1,0 +1,14 @@
+[
+  {
+    "prompt": "Create a Python script that uses the Gemini API SDK to generate content with a system instruction. The script should initialize the client and set a system instruction for the model to act as a cat named 'Neko'. The script should then use the gemini-2.5-flash model to respond to 'Hello there' and print the output.",
+    "id": "system_instruction"
+  },
+  {
+    "prompt": "Write a Python script using the Gemini API SDK that generates content with a specific temperature setting. The script should initialize the client and use the generate_content method with the gemini-2.5-flash model. The prompt should be 'Explain how AI works', and the temperature should be set to 0.1. Print the generated text.",
+    "id": "temperature"
+  },
+  {
+    "prompt": "Generate a Python script that demonstrates multimodal input with the Gemini API SDK. The script should use an image library to open a local image file named 'organ.png', and then use the generate_content method with the gemini-2.5-flash model to ask 'Tell me about this instrument' with the image as context. The script should then print the response.",
+    "id": "multimodal"
+  }
+]

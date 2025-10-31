@@ -39,15 +39,15 @@ DB_TOP_K = 3
 
 @mcp.tool(
     name="search_documentation",
-    description="""Performs a standard full-text search on Gemini documentation.
+    description="""Performs a standard keyword search on Gemini API documentation.
 CRITICAL: This is a naive keyword search, NOT semantic. Long queries will FAIL.
-You MUST use VERY SHORT queries (max 2-4 keywords) focusing only on the most unique terms.
-Break complex questions into separate, simple queries."""
+You MUST use VERY SHORT keyword based queries (max 1-3 keywords) focusing only on the most unique terms.
+Break complex questions into separate, simple queries. It will return the full documentation page for a capability or feature."""
 )
 def search_documentation(queries: Annotated[
         List[str],
         Field(
-            description="""List of up to 3 SHORT keyword queries. Keep each query under 4 words.
+            description="""List of up to 3 SHORT keyword queries. Keep each query under 3 words.
 BAD: 'google genai python generate image save bytes' (too specific, will fail).
 GOOD: ['function calling', 'imagen parameters', 'save bytes'] (broad, likely to hit)."""
         ),
