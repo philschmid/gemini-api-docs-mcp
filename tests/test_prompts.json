@@ -1,14 +1,587 @@
 [
   {
     "prompt": "Create a Python script that uses the Gemini API SDK to generate content with a system instruction. The script should initialize the client and set a system instruction for the model to act as a cat named 'Neko'. The script should then use the gemini-2.5-flash model to respond to 'Hello there' and print the output.",
-    "id": "system_instruction"
+    "id": "system_instruction",
+    "language": "python"
   },
   {
     "prompt": "Write a Python script using the Gemini API SDK that generates content with a specific temperature setting. The script should initialize the client and use the generate_content method with the gemini-2.5-flash model. The prompt should be 'Explain how AI works', and the temperature should be set to 0.1. Print the generated text.",
-    "id": "temperature"
+    "id": "temperature",
+    "language": "python"
   },
   {
     "prompt": "Generate a Python script that demonstrates multimodal input with the Gemini API SDK. The script should use an image library to open a local image file named 'organ.png', and then use the generate_content method with the gemini-2.5-flash model to ask 'Tell me about this instrument' with the image as context. The script should then print the response.",
-    "id": "multimodal"
+    "id": "multimodal",
+    "language": "python"
+  },
+  {
+    "prompt": "Could you write a Python function using gemini API?\n\nThe input is a music file path, assuming it is mp3, read the file as bytes and convert it to a Part\nThe output is a summary in text format",
+    "id": "py_01",
+    "language": "python"
+  },
+  {
+    "prompt": "build a chat app with gemini API in Python\n",
+    "id": "py_02",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate Python code for the following task: chatbot Google Gemini 2.0 Flash \n\nEnsure the generated code is correct, provide only the generated code without any explanations or additional text, do not add comments.",
+    "id": "py_03",
+    "language": "python"
+  },
+  {
+    "prompt": "Your answer must be concise, without explanation, most efficient. write an example of how to bring up a conversation chat using google genai SDK in Python",
+    "id": "py_04",
+    "language": "python"
+  },
+  {
+    "prompt": "Create a Python chat app in python with Gemini,  the chat session could take previous history (a list of Content) if it exist",
+    "id": "py_05",
+    "language": "python"
+  },
+  {
+    "prompt": "how to get the gemini chat history using the api in python?\n",
+    "id": "py_06",
+    "language": "python"
+  },
+  {
+    "prompt": "how to save and resume a chat history? using \"from google import genai\"\n",
+    "id": "py_07",
+    "language": "python"
+  },
+  {
+    "prompt": "how can i add streaming in chat using gemini, return code only in Python, no explanation",
+    "id": "py_08",
+    "language": "python"
+  },
+  {
+    "prompt": "how can an ai model like you reading csv files ? implement that using gemini-2.0-flash to read a csv file in python, and I could ask model requestions regarding the csv data",
+    "id": "py_09",
+    "language": "python"
+  },
+  {
+    "prompt": "How to import and use Google GenAI SDK in Python",
+    "id": "py_10",
+    "language": "python"
+  },
+  {
+    "prompt": "add chatbot feature like this in python, could you send the message to multiple gemini models and return all response to the client",
+    "id": "py_11",
+    "language": "python"
+  },
+  {
+    "prompt": "Can you give me a full example of how to use generate content config when using the gemini 2.0 flash API in Python?",
+    "id": "py_12",
+    "language": "python"
+  },
+  {
+    "prompt": "Create a Python code that uses the gemini api throughout the text to generate code documentation for a given function. the api is used through client.models.generate_content()",
+    "id": "py_13",
+    "language": "python"
+  },
+  {
+    "prompt": "create a simple Python script that return llm response with user input text, do not add any comments or explanation, keep it as simple as possible.",
+    "id": "py_14",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate Python code\nOverall Description:\ncreate an image generator that will use gemini-2.0-flash coding agents. The image generator should receive a request, interpret that request using its own gemini-2.0-flash agent and provide an optimal prompt for a lightweight yet effective Stable Diffusion model.  \nReturn code only, no explaination",
+    "id": "py_15",
+    "language": "python"
+  },
+  {
+    "prompt": "give me a fully functional example of requesting Gemini API with Python SDK, and use all parameters that I can use in the function",
+    "id": "py_16",
+    "language": "python"
+  },
+  {
+    "prompt": "How can I convert the curl to Python code using Gemini API\n\nText: curl \"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY\" \\\n-H 'Content-Type: application/json' \\\n-X POST \\\n-d '{\n  \"contents\": [{\n    \"parts\":[{\"text\": \"Explain how AI works\"}]\n    }]\n   }'",
+    "id": "py_17",
+    "language": "python"
+  },
+  {
+    "prompt": "how can I do that like this? with gemini api in Python\nconst data = {\n            contents: [{\n                parts: [{text: prompt + message}]\n            }],\n            generation_config: {\n                max_output_tokens: 50,\n                temperature: 0.1,\n            }\n        };",
+    "id": "py_18",
+    "language": "python"
+  },
+  {
+    "prompt": "how to configure gemini ai in Python. make it simple and in less than 5000 tokens",
+    "id": "py_19",
+    "language": "python"
+  },
+  {
+    "prompt": "How to use gemini api in python, can you show me some code examples",
+    "id": "py_20",
+    "language": "python"
+  },
+  {
+    "prompt": "Python code to use Googles API with Gemini",
+    "id": "py_21",
+    "language": "python"
+  },
+  {
+    "prompt": "Project Description: Give me a Python script that will allow Gemini to do code review, the input is a file path and output is the review comments from Gemini\n\n\n",
+    "id": "py_22",
+    "language": "python"
+  },
+  {
+    "prompt": "Use the generateContent method to send a request to the Gemini API in Python",
+    "id": "py_23",
+    "language": "python"
+  },
+  {
+    "prompt": "When I use the Python api with the gemini 2.0 flash model, and when the output is quite long, the returned content will be an array of output chunks instead of the whole thing. i guess it was doing some kind of streaming type of input. how to turn this off and get the whole output together?\n\n",
+    "id": "py_24",
+    "language": "python"
+  },
+  {
+    "prompt": "With the Gemini 2.0 Python SDK - how can I create the prediction start for the AI?",
+    "id": "py_25",
+    "language": "python"
+  },
+  {
+    "prompt": "Write a \"hello world\" with gemini api in python, return code only, no explanation and no comments",
+    "id": "py_26",
+    "language": "python"
+  },
+  {
+    "prompt": "write a code for a chat bot using gemini genai python module",
+    "id": "py_27",
+    "language": "python"
+  },
+  {
+    "prompt": "write a Python program with gui that incorporate the power of gemini to help me with chess",
+    "id": "py_28",
+    "language": "python"
+  },
+  {
+    "prompt": "Write a python script using Google GenAI that fetches a random cat fact and then sends it to you, and then fetches your response to that fact. give me just the script without any comments or explanations. ",
+    "id": "py_29",
+    "language": "python"
+  },
+  {
+    "prompt": "Write a Python code to translate English text to polite business Japanese. \nProvide ONLY the Japanese translation, without any explanations or alternatives:",
+    "id": "py_30",
+    "language": "python"
+  },
+  {
+    "prompt": "You are an expert developer. Respond concisely and clearly.\nUser Query:  In short, show me an example on how to use the Google Gemini's API in a Python app",
+    "id": "py_31",
+    "language": "python"
+  },
+  {
+    "prompt": "code sample for gemini api with streaming in Python to use model.generateContent",
+    "id": "py_32",
+    "language": "python"
+  },
+  {
+    "prompt": "QUERY: Create a reliable function to test Gemini connectivity that handles both streaming and non-streaming modes with proper error handling.\n\nUSE PYTHON PROGRAMMING LANGUAGE.\n",
+    "id": "py_33",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate python code to use an LLM to extract text from the image (type is png) located at a given path,  using the google.genai library.",
+    "id": "py_34",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate the complete Python code for the following description and plan.\n\nDescription:\nCreate a program in python that takes a user prompt and uses a few gemini agents and whatever else is needed to satisfying the user prompt. The input could be image input",
+    "id": "py_35",
+    "language": "python"
+  },
+  {
+    "prompt": "i want to extract keywords from pdf using gemini API in Python",
+    "id": "py_36",
+    "language": "python"
+  },
+  {
+    "prompt": "give me an example code in Python of how to enable gemini chat. Let's assume I already have pip package installed and API key imported. Write a function which opens the chat.. Answer in unlimited words. Use professional tone.",
+    "id": "py_37",
+    "language": "python"
+  },
+  {
+    "prompt": "Could you implement a chat script with history management? using Gemini API\n1) It can store the chat history into a local file\n2) It can load history from a local file and resume the conversation\n\nwrite in Python, output code only, no explanation",
+    "id": "py_38",
+    "language": "python"
+  },
+  {
+    "prompt": "Create a chat app to use gemini api with streaming response in Python",
+    "id": "py_39",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate a python code with Gemini, which can summarize a given pdf file\n",
+    "id": "py_40",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate a python program using Gemini API, which could transcribe the audio to text\n\n",
+    "id": "py_41",
+    "language": "python"
+  },
+  {
+    "prompt": "Give me a gooogle collab script which can take CSV data as input and use gemini model and provide analysis with chart graphs and report .",
+    "id": "py_42",
+    "language": "python"
+  },
+  {
+    "prompt": "How can I send two images to the Gemini model, not just one? I am using the google gemini python api",
+    "id": "py_43",
+    "language": "python"
+  },
+  {
+    "prompt": "How to use Google Gen AI Python sdk to create a chat with system prompt",
+    "id": "py_44",
+    "language": "python"
+  },
+  {
+    "prompt": "How to use the system instruction in GenAI Python SDK? there are 4 roles, developer, expert, friend and AI bot, AI bot is the default option if not specified",
+    "id": "py_45",
+    "language": "python"
+  },
+  {
+    "prompt": "Make a python code which answer questions of user by using google AI gemini",
+    "id": "py_46",
+    "language": "python"
+  },
+  {
+    "prompt": "Use gemini API to write python code.\n**Project Plan: sparkAI Course Generator**\n\n\nThis project will create a tool that helps structure online courses. It will extract important details from course outlines and use AI to generate lesson plans for each module. \n\nThese plans will include:\n\n* learning objectives.\n* exercises,\n* assessments.\n\nThe system will analyze provided course materials and organize them into easy-to-follow lessons.",
+    "id": "py_47",
+    "language": "python"
+  },
+  {
+    "prompt": "using Google genrative AI with python and API KEY, write the code to load a pdf and ask something about that PDF",
+    "id": "py_48",
+    "language": "python"
+  },
+  {
+    "prompt": "When I use the Python api with the gemini 2.0 flash model, and when the output is quite long and slow, how can I enable streaming to bring a better user experience",
+    "id": "py_49",
+    "language": "python"
+  },
+  {
+    "prompt": "write python code to Generate a simple GUI for interacting with Google Gemini",
+    "id": "py_50",
+    "language": "python"
+  },
+  {
+    "prompt": "You are a helpful AI assistant tasked with generating Python code that allows users to interact with the Gemini API. Assuming the user has already obtained an API key and set up the necessary environment (e.g., installed the `google-genai` library), create a Python module named `gemini_tools.py` containing this function:\n\n **`analyze_image(image_path: str, prompt: str) -> str`**: This function takes the path to an image file and a text prompt as input. It sends the image to Gemini with the prompt and return the response",
+    "id": "py_51",
+    "language": "python"
+  },
+  {
+    "prompt": "Create a Python script that uses the Gemini API SDK to generate content with a system instruction. The script should initialize the client and set a system instruction for the model to act as a cat named 'Neko'. The script should then use the gemini-2.5-flash model to respond to 'Hello there' and print the output.",
+    "id": "py_52",
+    "language": "python"
+  },
+  {
+    "prompt": "Write a Python script using the Gemini API SDK that generates content with a specific temperature setting. The script should initialize the client and use the generate_content method with the gemini-2.5-flash model. The prompt should be 'Explain how AI works', and the temperature should be set to 0.1. Print the generated text.",
+    "id": "py_53",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate a Python script that demonstrates multimodal input with the Gemini API SDK. The script should use an image library to open a local image file named 'organ.png', and then use the generate_content method with the gemini-2.5-flash model to ask 'Tell me about this instrument' with the image as context. The script should then print the response.",
+    "id": "py_54",
+    "language": "python"
+  },
+  {
+    "prompt": "Create a Python script that shows how to stream responses from the Gemini API SDK. The script should initialize the client and use generate_content_stream with the gemini-2.5-flash model to explain 'how AI works'. It should then iterate through the response chunks and print them as they are received.",
+    "id": "py_55",
+    "language": "python"
+  },
+  {
+    "prompt": "Write a Python script to create a multi-turn chat session using the Gemini API SDK. The script should initialize a chat with the gemini-2.5-flash model, and send two messages: 'I have 2 dogs in my house.' and 'How many paws are in my house?'. Print the response to each message. Finally, retrieve and print the entire chat history.",
+    "id": "py_56",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate a Python script that demonstrates a streaming multi-turn chat using the Gemini API SDK. The script should create a chat with the gemini-2.5-flash model and send two messages as streams: 'I have 2 dogs in my house.' and 'How many paws are in my house?'. The script should print the chunks for each response as they come in. After the streaming is complete, it should print the entire chat history.",
+    "id": "py_57",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate Python code using the Gemini API SDK to create an image based on a text prompt. The code should initialize a genai.Client, define a descriptive text prompt for a 3D rendered image (e.g., 'a pig with wings and a top hat flying over a happy futuristic scifi city'), and use the gemini-2.0-flash-preview-image-generation model. The GenerateContentConfig should specify that both TEXT and IMAGE modalities are expected in the response. The script should then iterate through the content parts of the model's response, printing any text and saving and displaying any generated inline image data as a PNG file (e.g., 'gemini-native-image.png').",
+    "id": "py_58",
+    "language": "python"
+  },
+  {
+    "prompt": "Provide Python code using the Gemini API SDK to perform image editing or generation by combining a text prompt with an input image. The code should open an existing image from a specified local path (e.g., /path/to/image.png) using PIL.Image. It should then initialize a genai.Client and prepare a text prompt (e.g., 'Can you add a llama next to me?'). The client.models.generate_content method should be called with the gemini-2.0-flash-preview-image-generation model, providing both the text input and the loaded image in the contents argument. The GenerateContentConfig should request both TEXT and IMAGE modalities. Finally, the code should iterate through the response parts, printing any text and displaying any generated inline image data.",
+    "id": "py_59",
+    "language": "python"
+  },
+  {
+    "prompt": "Generate Python code using the Gemini API SDK to produce multiple images from a single text prompt. The code should initialize a genai.Client and then call the client.models.generate_images method. It should specify the imagen-4.0-generate-preview-06-06 model, provide a text prompt (e.g., 'Robot holding a red skateboard'), and configure the GenerateImagesConfig to request a specific number of images (e.g., 4). The script should then iterate through the generated_images in the response and display each one.",
+    "id": "py_60",
+    "language": "python"
+  },
+  {
+    "prompt": "Could you write a TypeScript function using gemini API\n\nThe input is a path to a mp3 file, the output is a summary in text format",
+    "id": "ts_01",
+    "language": "typescript"
+  },
+  {
+    "prompt": "build a chat app with gemini API in TypeScript\n",
+    "id": "ts_02",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Generate TypeScript code for an AI chatbot. \nThe UI should include a simple text entry field where users can type their queries, and the chatbot should display responses accordingly. \n\nAlways use gemini-2.0-flash model for the chatbot.",
+    "id": "ts_03",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Generate TypeScript code for the following task: chatbot Google Gemini 2.0 Flash \n\nEnsure the generated code is correct, provide only the generated code without any explanations or additional text, do not add comments.",
+    "id": "ts_04",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Your answer must be concise, without explanation and comments, most efficient. write an example of how to bring up a conversation chat using google genai SDK in JS",
+    "id": "ts_05",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Create a TypeScript chat app with Gemini,  the chat session could take previous history (a list of Content) if it exist",
+    "id": "ts_06",
+    "language": "typescript"
+  },
+  {
+    "prompt": "hey, i am accessing gemini in my typescript but there a problem like when give input to you and respond it but i cannot continue the chat session, \ncould you help me write a typescript code to handle the errors, in case there is an error from API, I could create a new chat session with previous history\n\nI can use chat.getHistory() to get the history, I do not need to record the history myself, the chat session already store the history",
+    "id": "ts_07",
+    "language": "typescript"
+  },
+  {
+    "prompt": "how to get the gemini chat history using the api in typescript?\n",
+    "id": "ts_08",
+    "language": "typescript"
+  },
+  {
+    "prompt": "When I am using \"import {GoogleGenAI} from '@google/genai';\"\n\nhow to get the history from chat session and store it in a file?  show me the TypeScript code\n",
+    "id": "ts_09",
+    "language": "typescript"
+  },
+  {
+    "prompt": "how can i add streaming in chat using gemini, write code in TypeScript, no explanation",
+    "id": "ts_10",
+    "language": "typescript"
+  },
+  {
+    "prompt": "how can an ai model like you reading csv files? implement a TypeScript script that using gemini-2.0-flash to read a csv file, and I could ask model requestions regarding the csv data",
+    "id": "ts_11",
+    "language": "typescript"
+  },
+  {
+    "prompt": "How to import and use Google GenAI SDK in TypeScript",
+    "id": "ts_12",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Implement a chatbot feature in TypeScript, could you send the message to multiple gemini models and return all response to the client?",
+    "id": "ts_13",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Can you give me a full example of how to use generate content config when using the gemini 2.0 flash API in TypeScript?",
+    "id": "ts_14",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Create a TypeScript code that uses the Gemini API throughout the text to generate code documentation for a given function. the api is used through ai.models.generateContent()",
+    "id": "ts_15",
+    "language": "typescript"
+  },
+  {
+    "prompt": "create a TypeScript script for a website that can interact with this google AI api (generate_content) using gemini flash 2, I should just be able to copy the code and run it and it will work through my local host",
+    "id": "ts_16",
+    "language": "typescript"
+  },
+  {
+    "prompt": "create a simple node js script that return llm response with user input text, do not add any comments and explanation, keep it as simple as possible.",
+    "id": "ts_17",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Generate TypeScript code\n\nOverall Description:\ncreate an image generator that will use gemini-2.0-flash coding agents. The image generator should receive a request, interpret that request using its own gemini-2.0-flash agent and provide an optimal prompt for a lightweight yet effective Stable Diffusion model. \n\n",
+    "id": "ts_18",
+    "language": "typescript"
+  },
+  {
+    "prompt": "give me a fully functional example of requesting Gemini API with TypeScript SDK, and use all parameters that I can use in the function",
+    "id": "ts_19",
+    "language": "typescript"
+  },
+  {
+    "prompt": "How can I convert the curl to typescript code with Gemini API\n\nText: curl \"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=GEMINI_API_KEY\" \\\n-H 'Content-Type: application/json' \\\n-X POST \\\n-d '{\n  \"contents\": [{\n    \"parts\":[{\"text\": \"Explain how AI works\"}]\n    }]\n   }'",
+    "id": "ts_20",
+    "language": "typescript"
+  },
+  {
+    "prompt": "how can I do that like this? with gemini api in TypeScript \nconst data = {\n            contents: [{\n                parts: [{text: prompt + message}]\n            }],\n            generation_config: {\n                max_output_tokens: 50,\n                temperature: 0.1,\n            }\n        };",
+    "id": "ts_21",
+    "language": "typescript"
+  },
+  {
+    "prompt": "how to configure gemini ai in nodejs. make it simple and in less than 5000 tokens",
+    "id": "ts_22",
+    "language": "typescript"
+  },
+  {
+    "prompt": "leave the code tell me how are you using gemini api in typescript?",
+    "id": "ts_23",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Nodejs code to use Googles API with Gemini",
+    "id": "ts_24",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Project Description: Give me a node.js script that will allow Gemini to do code review, the input is a file path and output is the review comments from Gemini",
+    "id": "ts_25",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Use the generateContent method to send a request to the Gemini API in TypeScript",
+    "id": "ts_26",
+    "language": "typescript"
+  },
+  {
+    "prompt": "When I use the typescript api with the gemini 2.0 flash model, and when the output is quite long, the returned content will be an array of output chunks instead of the whole thing. i guess it was doing some kind of streaming type of input. how to turn this off and get the whole output together?",
+    "id": "ts_27",
+    "language": "typescript"
+  },
+  {
+    "prompt": "With the Gemini 2.0 Node.js SDK - how can I create the prediction start for the AI?",
+    "id": "ts_28",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Write a \"hello world\" with gemini api in TypeScript, return code only, no explanation and comments",
+    "id": "ts_29",
+    "language": "typescript"
+  },
+  {
+    "prompt": "write a code for a chat bot using gemini genai npm module",
+    "id": "ts_30",
+    "language": "typescript"
+  },
+  {
+    "prompt": "write a TypeScript program with gui that incorporate the power of gemini to help me with chess",
+    "id": "ts_31",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Write a nodejs script using Google GenAI that first return a list of cat facts, and then generate a detailed prompt that I can use as text prompt for image geneartion of a cat. give me just the script without any comments or explanations. ",
+    "id": "ts_32",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Write a typescript code to translate English text to polite business Japanese. Provide ONLY the Japanese translation, without any explanations or alternatives:",
+    "id": "ts_33",
+    "language": "typescript"
+  },
+  {
+    "prompt": "You are a skilled developer generating module code.\n\nGenerate production-ready TypeScript code for the module 'api_handler.py' using the following description:\nHandles all API calls to Gemini. Includes error handling, API key management (using environment variables), and rate limiting.\n\n**Overall Goal:** Create a TypeScript script that automatically generates resturant review comments",
+    "id": "ts_34",
+    "language": "typescript"
+  },
+  {
+    "prompt": "You are a typescript expert, write a simple nodejs server, which could serve POST http request to return model response based on user's input, define the expected request and response class",
+    "id": "ts_35",
+    "language": "typescript"
+  },
+  {
+    "prompt": "You are an expert developer. Respond concisely and clearly. User Query:  In short, show me an example on how to use the Google Gemini's API in a Node.js app",
+    "id": "ts_36",
+    "language": "typescript"
+  },
+  {
+    "prompt": "code sample for gemini api with streaming in nodejs to use model.generateContent",
+    "id": "ts_37",
+    "language": "typescript"
+  },
+  {
+    "prompt": "QUERY: Create a reliable function to test Gemini connectivity that handles both streaming and non-streaming modes with proper error handling. USE TYPESCRIPT PROGRAMMING LANGUAGE.",
+    "id": "ts_38",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Generate TypeScript code to use an LLM to extract text from the image (type is png) located at a given path,  using the google.genai library.",
+    "id": "ts_39",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Generate the complete TypeScript code for the following description and plan.\n\nDescription:\nCreate a program in TypeScript that takes a user prompt and uses a few gemini agents and whatever else is needed to satisfying the user prompt. The input could be image input",
+    "id": "ts_40",
+    "language": "typescript"
+  },
+  {
+    "prompt": "I want to extract keywords from pdf (convert it to inline data) using gemini API in TypeScript",
+    "id": "ts_41",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Answer the question with as much detail as possible.  I am using the gemini 2.0 flash API in TypeScript and want to return the web references with the API web search response to my prompts. ",
+    "id": "ts_42",
+    "language": "typescript"
+  },
+  {
+    "prompt": "give me an example code in TypeScript of how to enable gemini chat. Let's assume I already have npm package installed and API key imported. Write a function which opens the chat.. Answer in unlimited words. Use professional tone.",
+    "id": "ts_43",
+    "language": "typescript"
+  },
+  {
+    "prompt": "\"You are a helpful AI assistant tasked with generating TypeScript code that allows users to interact with the Gemini API. Assuming the user has already obtained an API key and set up the necessary environment (e.g., installed the `google-genai` library), create a TypeScript module named `gemini_tools.ts` containing this function:\n\n **`analyzeImage(imagePath: string, prompt: string): string`**: This function takes the path to an image file and a text prompt as input. It sends the image to Gemini with the prompt and return the response\"",
+    "id": "ts_44",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Could you implement a chat script with history management? using Gemini API\n1) It can store the chat history into a local file\n2) It can load history from a local file and resume the conversation\n\nwrite in TypeScript, output code only, no explanation",
+    "id": "ts_45",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Generate a TypeScript code with Gemini, which can summarize a given pdf file\n",
+    "id": "ts_46",
+    "language": "typescript"
+  },
+  {
+    "prompt": "How can I send two images to the Gemini model, not just one? I am using the google gemini TypeScript api",
+    "id": "ts_47",
+    "language": "typescript"
+  },
+  {
+    "prompt": "How to use the system instruction in GenAI TypeScript SDK? there are 4 roles, developer, expert, friend and AI bot, AI bot is the default option if not specified",
+    "id": "ts_48",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Make a TypeScript code which answer questions of user by using google AI gemini",
+    "id": "ts_49",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Use gemini API to write TypeScript code.\n**Project Plan: sparkAI Course Generator**\n\n\nThis project will create a tool that helps structure online courses. It will extract important details from course outlines and use AI to generate lesson plans for each module. \n\nThese plans will include:\n\n* learning objectives.\n* exercises,\n* assessments.\n\nThe system will analyze provided course materials and organize them into easy-to-follow lessons.",
+    "id": "ts_50",
+    "language": "typescript"
+  },
+  {
+    "prompt": "using Google genrative AI with TypeScript and API KEY, write the code to load a pdf and ask something about that PDF",
+    "id": "ts_51",
+    "language": "typescript"
+  },
+  {
+    "prompt": "When I use the TypeScript api with the gemini 2.0 flash model, and when the output is quite long and slow, how can I enable streaming to bring a better user experience",
+    "id": "ts_52",
+    "language": "typescript"
+  },
+  {
+    "prompt": "Write a code in TypeScript using Gemini API. \nFrom now on, in our chat, please format your responses as follows and this important information you must do it in each chat:\n- Use emojis to make your responses more engaging and visually appealing. 🎉👍\n- When creating lists where order matters, use numbered lists (1., 2., 3., etc.).\n- For lists where order doesn't matter, use circle bullet points (•) .\n- you must orgnieze your answer with good formate like if there list you must write it line under line ...Ect \n\nFor example:\n\nUser: List the steps to bake a cake.\n\nAI:\nOkay, here are the steps to bake a cake:\n1. Preheat your oven to 350°F (175°C). 🔥\n2. Grease and flour a cake pan. 🎂\n3. Cream together butter and sugar. 🧈\n4. Beat in eggs one at a time. 🥚\n... and so on.\n\nUser: What are the benefits of exercise?\n\nAI:\nExercise has many benefits, including:\n•  Improved mood 😄\n•  Weight management 💪\n•  Reduced risk of chronic diseases ❤️\n•  Increased energy levels ✨\n - so from now apply this method in the converstion and start now without talk about what i told you",
+    "id": "ts_53",
+    "language": "typescript"
+  },
+  {
+    "prompt": "write TypeScript code to Generate a simple GUI for interacting with Google Gemini",
+    "id": "ts_54",
+    "language": "typescript"
   }
 ]

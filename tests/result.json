@@ -1,0 +1,34 @@
+{
+  "summary": {
+    "total": 117,
+    "passed": 114,
+    "failed": 3,
+    "skipped": 0
+  },
+  "failures": [
+    {
+      "id": "temperature",
+      "language": "python",
+      "prompt": "Write a Python script using the Gemini API SDK that generates content with a specific temperature setting. The script should initialize the client and use the generate_content method with the gemini-2.5-flash model. The prompt should be 'Explain how AI works', and the temperature should be set to 0.1. Print the generated text.",
+      "error": null,
+      "analysis": "old_sdk",
+      "script": "tests/generated/temperature.py"
+    },
+    {
+      "id": "py_29",
+      "language": "python",
+      "prompt": "Write a python script using Google GenAI that fetches a random cat fact and then sends it to you, and then fetches your response to that fact. give me just the script without any comments or explanations. ",
+      "error": null,
+      "analysis": "old_sdk",
+      "script": "tests/generated/py_29.py"
+    },
+    {
+      "id": "ts_41",
+      "language": "typescript",
+      "prompt": "I want to extract keywords from pdf (convert it to inline data) using gemini API in TypeScript",
+      "error": null,
+      "analysis": "old_sdk",
+      "script": "tests/generated/ts_41.ts"
+    }
+  ]
+}

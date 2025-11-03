@@ -102,3 +102,17 @@ Configure your MCP client to run the `gemini-docs-mcp` command.
 ## License
 
 MIT
+
+## Test Results
+
+We run a comprehensive evaluation harness to ensure the MCP server provides accurate and up-to-date code examples. The tests cover both Python and TypeScript SDKs.
+
+| Metric | Value |
+| :--- | :--- |
+| Total Tests | 117 |
+| Passed | 114 |
+| Failed | 3 |
+
+*Last updated: 2025-11-03 13:29:01*
+
+You can find the detailed test results in `tests/result.json`.

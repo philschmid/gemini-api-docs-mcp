@@ -34,7 +34,6 @@ def sanitize_term(query):
 
 # Initialize FastMCP server with lifespan
 mcp = FastMCP("Gemini API Docs", lifespan=server_lifespan)
-
 DB_TOP_K = 3
 
 @mcp.tool(
