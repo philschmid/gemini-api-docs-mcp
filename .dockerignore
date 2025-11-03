@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Git
+.git/
+.gitignore
+
+# Testing
+tests/
+*.json
+
+# Documentation
+# README.md is needed for building the package
+LICENSE
+
+# Database files (shouldn't be in Docker image)
+*.db
+*.db-wal
+*.db-shm
+
+# Verification scripts
+verify_*.py
