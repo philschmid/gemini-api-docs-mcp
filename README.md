@@ -2,6 +2,10 @@
 
 An local STDIO MCP server that provides tools to search and retrieve Google Gemini API documentation.
 
+<a href="https://glama.ai/mcp/servers/@philschmid/gemini-api-docs-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@philschmid/gemini-api-docs-mcp/badge" alt="Gemini Docs Server MCP server" />
+</a>
+
 -   **Search Documentation**: Full-text search across all Gemini documentation pages.
 -   **Get Capabilities**: List available documentation pages or retrieve content for a specific page.
 -   **Get Current Model**: Quickly access documentation for current Gemini models.
