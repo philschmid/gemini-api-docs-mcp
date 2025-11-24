@@ -12,6 +12,7 @@ dependencies = [
     "httpx",
     "beautifulsoup4",
     "sqlite-utils",
+    "uvicorn",
 ]
 
 [project.scripts]
