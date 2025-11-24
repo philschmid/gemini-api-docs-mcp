@@ -1,5 +1,8 @@
+import os
+import logging
 from fastmcp import FastMCP
 from contextlib import asynccontextmanager
+import asyncio
 from .ingest import ingest_docs
 from sqlite_utils import Database
 from pydantic import Field
@@ -7,11 +10,37 @@ from typing import List
 from .config import DB_PATH
 from typing import Annotated
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 @asynccontextmanager
 async def server_lifespan(server: FastMCP):
     """Lifespan context manager for the FastMCP server."""
-    await ingest_docs()
+    logger.info("Server starting up...")
+    logger.info(f"Database path: {DB_PATH}")
+    
+    # Ensure database directory exists
+    from pathlib import Path
+    db_path_obj = Path(DB_PATH)
+    db_path_obj.parent.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Database directory ready: {db_path_obj.parent}")
+    
+    # Run ingestion in background so the server can start quickly (important for Cloud Run)
+    # Don't block startup if ingestion fails - server should be usable even without fresh data
+    async def run_ingestion_safely():
+        try:
+            logger.info("Starting background documentation ingestion...")
+            await ingest_docs()
+            logger.info("Documentation ingestion completed")
+        except Exception as e:
+            logger.error(f"Ingestion failed (server will continue): {e}", exc_info=True)
+    
+    # Start ingestion in background without blocking
+    asyncio.create_task(run_ingestion_safely())
+    logger.info("Server ready, ingestion running in background")
     yield
+    logger.info("Server shutting down...")
 
 def sanitize_term(query):
     """
@@ -133,7 +162,83 @@ def get_current_model() -> str:
         return f"Error retrieving models documentation: {e}"
 
 def main():
-    mcp.run()
+    # If PORT is set, run as HTTP server (for Cloud Run)
+    # Otherwise, run in stdio mode (for local MCP clients)
+    if os.environ.get("PORT"):
+        port = int(os.environ.get("PORT", "8080"))
+        host = "0.0.0.0"
+
+        logger.info(f"Starting MCP server in HTTP mode on {host}:{port}")
+        logger.info(f"MCP endpoint will be available at http://{host}:{port}/mcp")
+
+        # FastMCP exposes HTTP apps via http_app or streamable_http_app attributes
+        # Use streamable_http_app for SSE transport (better for remote clients like Cursor)
+        mcp_app = None
+        
+        if hasattr(mcp, "streamable_http_app"):
+            mcp_app = mcp.streamable_http_app
+            logger.info(f"Found mcp.streamable_http_app: {type(mcp_app)}")
+        elif hasattr(mcp, "http_app"):
+            mcp_app = mcp.http_app
+            logger.info(f"Found mcp.http_app: {type(mcp_app)}")
+        
+        if mcp_app is not None:
+            import uvicorn
+            logger.info(f"Starting uvicorn with HTTP app type: {type(mcp_app)}")
+            try:
+                # Configure uvicorn for Cloud Run
+                config = uvicorn.Config(
+                    mcp_app,
+                    host=host,
+                    port=port,
+                    log_level="info",
+                    access_log=True,
+                    reload=False,
+                )
+                server = uvicorn.Server(config)
+                logger.info(f"Uvicorn server configured, starting on {host}:{port}")
+                server.run()
+                return
+            except Exception as e:
+                logger.error(f"Failed to start uvicorn: {e}", exc_info=True)
+                raise
+
+        # Fallback: try FastMCP's HTTP run methods
+        logger.info("Trying FastMCP HTTP run methods...")
+        try:
+            # Try run_http_async if available
+            if hasattr(mcp, "run_http_async"):
+                import asyncio
+                logger.info("Using run_http_async")
+                asyncio.run(mcp.run_http_async(host=host, port=port))
+                return
+        except Exception as e:
+            logger.warning(f"run_http_async failed: {e}")
+        
+        # Last resort: this shouldn't happen if FastMCP is properly installed
+        raise RuntimeError(
+            f"Failed to start MCP HTTP server. FastMCP object type: {type(mcp)}. "
+            f"Available HTTP attributes: http_app={hasattr(mcp, 'http_app')}, "
+            f"streamable_http_app={hasattr(mcp, 'streamable_http_app')}, "
+            f"run_http_async={hasattr(mcp, 'run_http_async')}"
+        )
+    else:
+        # Run in stdio mode (for local MCP clients)
+        logger.info("Starting MCP server in stdio mode")
+        try:
+            # FastMCP's run() method defaults to stdio when no host/port is provided
+            mcp.run()
+        except Exception as e:
+            logger.error(f"Failed to start MCP stdio server: {e}", exc_info=True)
+            raise
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        import sys
+        import traceback
+        logger.error(f"Fatal error starting server: {e}", exc_info=True)
+        print(f"Fatal error: {e}", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
+        sys.exit(1)

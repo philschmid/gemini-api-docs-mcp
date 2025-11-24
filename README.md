@@ -1,6 +1,6 @@
 # Gemini Docs MCP Server
 
-An local STDIO MCP server that provides tools to search and retrieve Google Gemini API documentation.
+A remote HTTP MCP server that provides tools to search and retrieve Google Gemini API documentation. The server exposes the MCP protocol at the `/mcp` endpoint and can be deployed to Cloud Run or other containerized platforms. It also supports local stdio mode for development.
 
 -   **Search Documentation**: Full-text search across all Gemini documentation pages.
 -   **Get Capabilities**: List available documentation pages or retrieve content for a specific page.
@@ -55,39 +55,85 @@ rm -rf gemini-api-docs-mcp
 
 ## Usage
 
-If you installed via `pip` (Option 2 or 3), run the server using:
+### Running as a Remote HTTP Server
+
+The server runs as an HTTP server and exposes the MCP protocol at the `/mcp` endpoint. It respects the `PORT` environment variable (defaults to 8080).
 
 ```bash
+# Set port (optional, defaults to 8080)
+export PORT=8080
+
+# Run the server
 gemini-docs-mcp
 ```
 
-This will start the MCP server over stdio. It will immediately begin ingesting documentation, which might take a few moments on the first run.
+The server will be accessible at `http://localhost:8080/mcp` (or your configured port).
+
+### Docker Deployment
+
+Build and run the Docker container:
+
+```bash
+# Build the image
+docker build -t gemini-docs-mcp .
+
+# Run the container
+docker run -p 8080:8080 gemini-docs-mcp
+```
+
+### Cloud Run Deployment
+
+Deploy to Google Cloud Run:
+
+```bash
+# Build and deploy
+gcloud run deploy gemini-docs-mcp \
+  --source . \
+  --platform managed \
+  --region us-central1 \
+  --allow-unauthenticated
+```
+
+The server will be accessible at `https://<your-service-url>/mcp`.
+
+### Running in Stdio Mode (Local)
+
+If you don't set the `PORT` environment variable, the server runs in stdio mode for local MCP clients:
+
+```bash
+# Don't set PORT - runs in stdio mode
+gemini-docs-mcp
+```
 
 ### Configuration
 
-The database is stored at `~/.mcp/gemini-api-docs/database.db` by default. You can override this by setting the `GEMINI_DOCS_DB_PATH` environment variable.
+The database is stored at:
+- `/tmp/gemini-api-docs/database.db` in containerized environments
+- `~/.mcp/gemini-api-docs/database.db` in local environments
+
+You can override this by setting the `GEMINI_DOCS_DB_PATH` environment variable.
 
 ### Using with an MCP Client
 
-Configure your MCP client to run the `gemini-docs-mcp` command.
+For remote HTTP servers, configure your MCP client to connect via HTTP:
 
 ```json
 {
   "mcpServers": {
     "gemini-docs": {
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/philschmid/gemini-api-docs-mcp", "gemini-docs-mcp"]
+      "url": "https://<your-service-url>/mcp"
     }
   }
 }
 ```
 
+For local development with stdio (if supported by your client):
 
 ```json
 {
   "mcpServers": {
     "gemini-docs": {
-      "command": "gemini-docs-mcp",
+      "command": "gemini-docs-mcp"
     }
   }
 }

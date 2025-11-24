@@ -15,37 +15,54 @@ logger = logging.getLogger(__name__)
 LLMS_TXT_URL = "https://ai.google.dev/gemini-api/docs/llms.txt"
 MAX_CONCURRENT_REQUESTS = 20
 
-async def fetch_url(client: httpx.AsyncClient, url: str) -> str:
+async def fetch_url(client: httpx.AsyncClient, url: str, retries: int = 3) -> str:
     """Fetches content from a URL and extracts text from HTML."""
-    try:
-        response = await client.get(url, follow_redirects=True)
-        response.raise_for_status()
-        
-        # Use BeautifulSoup to extract text if it's HTML
-        if "text/html" in response.headers.get("content-type", ""):
-            soup = BeautifulSoup(response.text, 'html.parser')
+    for attempt in range(retries):
+        try:
+            response = await client.get(url, follow_redirects=True, timeout=30.0)
+            response.raise_for_status()
             
-            # Remove script and style elements
-            for script_or_style in soup(["script", "style", "header", "footer", "nav"]):
-                script_or_style.decompose()
+            # Use BeautifulSoup to extract text if it's HTML
+            if "text/html" in response.headers.get("content-type", ""):
+                soup = BeautifulSoup(response.text, 'html.parser')
                 
-            text = soup.get_text(separator='\n')
-            
-            # Break into lines and remove leading/trailing space on each
-            lines = (line.strip() for line in text.splitlines())
-            # Break multi-headlines into a line each
-            chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-            # Drop blank lines
-            text = '\n'.join(chunk for chunk in chunks if chunk)
-            return text
-            
-        return response.text
-    except httpx.HTTPError as e:
-        logger.error(f"Error fetching {url}: {e}")
-        return ""
-    except Exception as e:
-        logger.error(f"Error parsing {url}: {e}")
-        return ""
+                # Remove script and style elements
+                for script_or_style in soup(["script", "style", "header", "footer", "nav"]):
+                    script_or_style.decompose()
+                    
+                text = soup.get_text(separator='\n')
+                
+                # Break into lines and remove leading/trailing space on each
+                lines = (line.strip() for line in text.splitlines())
+                # Break multi-headlines into a line each
+                chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+                # Drop blank lines
+                text = '\n'.join(chunk for chunk in chunks if chunk)
+                return text
+                
+            return response.text
+        except httpx.HTTPStatusError as e:
+            error_msg = f"HTTP {e.response.status_code}: {e.response.reason_phrase}"
+            if attempt < retries - 1:
+                logger.warning(f"Error fetching {url} (attempt {attempt + 1}/{retries}): {error_msg}. Retrying...")
+                await asyncio.sleep(2 ** attempt)  # Exponential backoff
+            else:
+                logger.error(f"Error fetching {url} after {retries} attempts: {error_msg}")
+                return ""
+        except httpx.RequestError as e:
+            error_msg = f"Request error: {str(e) or type(e).__name__}"
+            if attempt < retries - 1:
+                logger.warning(f"Error fetching {url} (attempt {attempt + 1}/{retries}): {error_msg}. Retrying...")
+                await asyncio.sleep(2 ** attempt)  # Exponential backoff
+            else:
+                logger.error(f"Error fetching {url} after {retries} attempts: {error_msg}")
+                return ""
+        except Exception as e:
+            error_msg = f"{type(e).__name__}: {str(e) or 'Unknown error'}"
+            logger.error(f"Error parsing {url}: {error_msg}")
+            return ""
+    
+    return ""
 
 def parse_llms_txt(content: str) -> List[Tuple[str, str]]:
     """Parses llms.txt content to extract titles and URLs."""
