@@ -3,6 +3,7 @@ import logging
 from fastmcp import FastMCP
 from contextlib import asynccontextmanager
 import asyncio
+from datetime import datetime, timezone
 from .ingest import ingest_docs
 from sqlite_utils import Database
 from pydantic import Field
@@ -29,12 +30,27 @@ async def server_lifespan(server: FastMCP):
     # Run ingestion in background so the server can start quickly (important for Cloud Run)
     # Don't block startup if ingestion fails - server should be usable even without fresh data
     async def run_ingestion_safely():
+        global _ingestion_in_progress, _ingestion_status
+        _ingestion_in_progress = True
+        _ingestion_status = {"status": "running", "last_run": None, "error": None}
         try:
             logger.info("Starting background documentation ingestion...")
             await ingest_docs()
+            _ingestion_status = {
+                "status": "completed",
+                "last_run": datetime.now(timezone.utc).isoformat(),
+                "error": None
+            }
             logger.info("Documentation ingestion completed")
         except Exception as e:
+            _ingestion_status = {
+                "status": "failed",
+                "last_run": datetime.now(timezone.utc).isoformat(),
+                "error": str(e)
+            }
             logger.error(f"Ingestion failed (server will continue): {e}", exc_info=True)
+        finally:
+            _ingestion_in_progress = False
     
     # Start ingestion in background without blocking
     asyncio.create_task(run_ingestion_safely())
@@ -64,6 +80,12 @@ def sanitize_term(query):
 # Initialize FastMCP server with lifespan
 mcp = FastMCP("Gemini API Docs", lifespan=server_lifespan)
 DB_TOP_K = 3
+
+# Track ingestion status
+_ingestion_in_progress = False
+_ingestion_status = {"status": "idle", "last_run": None, "error": None}
+
+# We'll add refresh endpoints after we get the FastAPI app in main()
 
 @mcp.tool(
     name="search_documentation",
@@ -183,6 +205,118 @@ def main():
             logger.info(f"Found mcp.http_app: {type(mcp_app)}")
         
         if mcp_app is not None:
+            # Create a wrapper FastAPI app that includes MCP routes and our custom routes
+            from fastapi import FastAPI
+            from fastapi.responses import JSONResponse
+            from fastapi.middleware.cors import CORSMiddleware
+            
+            # Create wrapper app
+            wrapper_app = FastAPI(title="Gemini Docs MCP Server")
+            
+            # Add CORS middleware
+            wrapper_app.add_middleware(
+                CORSMiddleware,
+                allow_origins=["*"],
+                allow_credentials=True,
+                allow_methods=["*"],
+                allow_headers=["*"],
+            )
+            
+            # Mount the MCP app at /mcp
+            # mcp_app might be a callable ASGI app, so we need to use Starlette's mounting
+            from starlette.applications import Starlette
+            from starlette.routing import Mount
+            
+            # If mcp_app is callable, wrap it; otherwise use it directly
+            if callable(mcp_app):
+                # It's an ASGI app, mount it directly
+                wrapper_app.mount("/mcp", mcp_app)
+            else:
+                # Try to get the ASGI app from the object
+                asgi_app = getattr(mcp_app, '__call__', mcp_app)
+                wrapper_app.mount("/mcp", asgi_app)
+            
+            # Add custom refresh endpoints
+            @wrapper_app.get("/refresh")
+            @wrapper_app.post("/refresh")
+            async def refresh_docs():
+                """Manually trigger documentation ingestion."""
+                try:
+                    global _ingestion_in_progress, _ingestion_status
+                    
+                    if _ingestion_in_progress:
+                        return JSONResponse(
+                            status_code=202,
+                            content={
+                                "status": "in_progress",
+                                "message": "Ingestion is already running",
+                                "last_run": _ingestion_status.get("last_run")
+                            }
+                        )
+                    
+                    # Start ingestion in background
+                    import asyncio as asyncio_module
+                    async def run_refresh():
+                        global _ingestion_in_progress, _ingestion_status
+                        _ingestion_in_progress = True
+                        _ingestion_status = {
+                            "status": "running",
+                            "last_run": None,
+                            "error": None
+                        }
+                        try:
+                            logger.info("Manual refresh triggered via /refresh endpoint")
+                            await ingest_docs()
+                            _ingestion_status = {
+                                "status": "completed",
+                                "last_run": datetime.now(timezone.utc).isoformat(),
+                                "error": None
+                            }
+                            logger.info("Manual refresh completed successfully")
+                        except Exception as e:
+                            _ingestion_status = {
+                                "status": "failed",
+                                "last_run": datetime.now(timezone.utc).isoformat(),
+                                "error": str(e)
+                            }
+                            logger.error(f"Manual refresh failed: {e}", exc_info=True)
+                        finally:
+                            _ingestion_in_progress = False
+                    
+                    asyncio_module.create_task(run_refresh())
+                    return JSONResponse(
+                        status_code=202,
+                        content={
+                            "status": "started",
+                            "message": "Documentation ingestion started in background"
+                        }
+                    )
+                except Exception as e:
+                    logger.error(f"Error in refresh_docs endpoint: {e}", exc_info=True)
+                    return JSONResponse(
+                        status_code=500,
+                        content={
+                            "status": "error",
+                            "message": f"Failed to start refresh: {str(e)}"
+                        }
+                    )
+            
+            @wrapper_app.get("/refresh/status")
+            async def refresh_status():
+                """Get the status of the last ingestion."""
+                return JSONResponse(content=_ingestion_status)
+            
+            @wrapper_app.get("/health")
+            async def health_check():
+                """Health check endpoint for Cloud Run."""
+                return JSONResponse(content={"status": "healthy", "service": "gemini-docs-mcp"})
+            
+            logger.info(f"Refresh endpoint available at: http://{host}:{port}/refresh")
+            logger.info(f"Status endpoint available at: http://{host}:{port}/refresh/status")
+            
+            # Use wrapper app instead of mcp_app
+            mcp_app = wrapper_app
+            
             import uvicorn
             logger.info(f"Starting uvicorn with HTTP app type: {type(mcp_app)}")
             try:
