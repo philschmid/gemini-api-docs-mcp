@@ -149,6 +149,64 @@ For local development with stdio (if supported by your client):
 -   `get_capability_page(capability: str = None)`: Get a list of capabilities or content for a specific one.
 -   `get_current_model()`: Get documentation for current Gemini models.
 
+## Manual Refresh Endpoint
+
+When running as an HTTP server, you can manually trigger documentation ingestion using the `/refresh` endpoint. This is useful for updating documentation without redeploying the server.
+
+### Endpoints
+
+- **`POST /refresh`** or **`GET /refresh`**: Triggers documentation ingestion in the background. Returns immediately with a 202 status.
+- **`GET /refresh/status`**: Returns the current ingestion status (`idle`, `running`, `completed`, or `failed`) and the last run timestamp.
+- **`GET /health`**: Health check endpoint for Cloud Run and monitoring.
+
+### Usage
+
+```bash
+# Trigger a refresh (POST or GET)
+curl -X POST https://<your-service-url>/refresh
+
+# Check refresh status
+curl https://<your-service-url>/refresh/status
+
+# Health check
+curl https://<your-service-url>/health
+```
+
+### Response Examples
+
+**Refresh triggered:**
+```json
+{
+    "status": "started",
+    "message": "Documentation ingestion started in background"
+}
+```
+
+**Status while running:**
+```json
+{
+    "status": "running",
+    "last_run": null,
+    "error": null
+}
+```
+
+**Status when completed:**
+```json
+{
+    "status": "completed",
+    "last_run": "2025-11-24T21:59:20.165232+00:00",
+    "error": null
+}
+```
+
+### Notes
+
+- The refresh runs asynchronously and doesn't block the server. MCP tools continue to work while ingestion is running.
+- Ingestion typically takes 1-3 minutes depending on the number of documentation pages.
+- The database is updated incrementally (only changed pages are updated).
+- If a refresh is already running, calling `/refresh` again returns a 202 with "in_progress" status.
+
 ## License
 
 MIT
